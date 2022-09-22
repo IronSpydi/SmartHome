@@ -4,14 +4,14 @@ from .models import User, ControlSystemRegistration, SubscriptionPlan, Subscript
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['name','email','phone_number','is_active','created_at','updated_at']
+    list_display = ['id','name','email','phone_number','is_active','created_at','updated_at']
 
 # class UserAdmin(admin.ModelAdmin):
 #     list_display = ['first_name', 'last_name']
 class ControlSystemRegistrationAdmin(admin.ModelAdmin):
     list_display = ['serial_no', 'user_id','registered_at']
 class SubscriptionPlanAdmin(admin.ModelAdmin):
-    list_display = ['plan_name', 'price','duration_month','number_of_devices','automation_access']
+    list_display = ['plan_name', 'price','duration_month','number_of_devices','automation_access','sharable_to']
 class SubscriptionsAdmin(admin.ModelAdmin):
     list_display = ['serial_no','subscription_plan_id','is_active','purchase_date','expiry_date']
 class HomeAdmin(admin.ModelAdmin):

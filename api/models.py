@@ -1,4 +1,5 @@
 
+from email.policy import default
 from django.db import models
 
 from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
@@ -13,7 +14,7 @@ class User(models.Model):
     phone_number = models.CharField(max_length=10, null=False)
     password = models.CharField(
         validators=[MinLengthValidator(4)], max_length=20, null=False)
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,10 +34,15 @@ class ControlSystemRegistration(models.Model):
 
 class SubscriptionPlan(models.Model):
     plan_name = models.CharField(max_length=50)
-    duration_month = models.IntegerField()
+    duration_month = models.IntegerField(blank=True,null=True)
     number_of_devices = models.IntegerField()
     automation_access = models.BooleanField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    sharable_to = models.IntegerField(default = 1)
+    price = models.DecimalField(max_digits=10, decimal_places=2,blank=True,null=True)
+
+    def __str__(self):
+        return self.plan_name
+    
 
     def __str__(self):
         return self.plan_name
@@ -81,6 +87,10 @@ class Devices(models.Model):
     is_active = models.BooleanField()
     parameters = models.TextField(
         default={"active": "off", "color": "white", "speed": None})
+    
+    def __str__(self):
+        return self.device_name
+    
 
 
 class Permission(models.Model):

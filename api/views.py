@@ -24,11 +24,13 @@ def registration(request):
             serializer = UserSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                # user = User.objects.get(email=request.data["email"])
-                # ControlSystemRegistration.objects.filter(pk=request.data['serial_no']).update(user_id=user.id,registered_at=str(datetime.now()))
-                exist_user = user.filter(email=request.data["email"])
-                serialNo = ControlSystemRegistration.objects.get(pk=request.data['serial_no'])
-                serializer = ControlSystemRegistrationSerializer(serialNo, data={"user_id": exist_user.id, "registered_at": str(datetime.now())}, partial=True)  # set partial=True to update a data partially
-                if serializer.is_valid():
-                    serializer.save()
+                user = User.objects.get(email=request.data["email"])
+                user.is_active = True
+                user.save()
+                ControlSystemRegistration.objects.filter(pk=request.data['serial_no']).update(user_id=user.id,registered_at=str(datetime.now()))
+                # exist_user = user.filter(email=request.data["email"])
+                # serialNo = ControlSystemRegistration.objects.get(pk=request.data['serial_no'])
+                # serializer = ControlSystemRegistrationSerializer(serialNo, data={"user_id": exist_user.id, "registered_at": str(datetime.now())}, partial=True)  # set partial=True to update a data partially
+                # if serializer.is_valid():
+                #     serializer.save()
                 return Response({"message": "registered successfully"}, status=status.HTTP_201_CREATED)

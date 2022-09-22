@@ -6,7 +6,7 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        exclude = ["id"]
+        exclude = ["id","is_active"]
 
 
 class ControlSystemRegistrationSerializer(serializers.ModelSerializer):
